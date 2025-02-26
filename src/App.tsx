@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { Wallet2, Home } from "lucide-react";
-import skibidiLogo from "./assets/skibidi-removebg-preview.png";
+import skibidiLogo from "./assets/skibidi3.png";
 
 // Contract Addresses
 const USDT_CONTRACT_ADDRESS = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F";
