@@ -121,7 +121,7 @@ function App() {
             </div>
 
             <div className="hidden md:flex items-center space-x-4">
-              <a href="/" className="flex items-center text-white hover:text-[#00f0ff]">
+              <a href="https://meme-coin-five.vercel.app/" className="flex items-center text-white hover:text-[#00f0ff]">
                 <Home size={20} className="mr-1" /> Home
               </a>
 
