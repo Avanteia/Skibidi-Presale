@@ -32,7 +32,7 @@ function App() {
     const value = e.target.value;
     if (/^\d*\.?\d*$/.test(value)) {
       const numValue = parseFloat(value) || 0;
-      if (numValue <= 10000) {
+      if (numValue <= 1000) {
         setAmount(value);
       }
     }
@@ -41,7 +41,7 @@ function App() {
   // Ensure the amount is valid (10 - 10000 USDT)
   const isValidAmount = () => {
     const numAmount = parseFloat(amount) || 0;
-    return numAmount >= 10 && numAmount <= 10000;
+    return numAmount >= 10 && numAmount <= 1000;
   };
 
   // Connect MetaMask
