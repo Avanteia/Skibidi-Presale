@@ -5,7 +5,7 @@ import skibidiLogo from "./assets/skibidi-removebg-preview.png";
 
 // Contract Addresses
 const USDT_CONTRACT_ADDRESS = "0x3Fe3ad838059a254e5AAD551a2231f61a76a2554";
-const PRESALE_CONTRACT_ADDRESS = "0x103A6a14397E206298e88dF9D834EBfc6a737A9e";
+const PRESALE_CONTRACT_ADDRESS = "0xf3133c5C44F598710FCfC48C599ec2910c0e358C";
 
 // ABIs
 const USDT_ABI = [
