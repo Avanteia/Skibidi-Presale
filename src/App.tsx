@@ -1,25 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { ethers } from 'ethers';
-import { Wallet2, Menu, X, ArrowRightLeft, FileText, Home } from 'lucide-react';
-import skibidiLogo from './assets/skibidi-removebg-preview.png';
+import React, { useState, useEffect } from "react";
+import { ethers } from "ethers";
+import { Wallet2, Home } from "lucide-react";
+import skibidiLogo from "./assets/skibidi-removebg-preview.png";
 
 // Contract Addresses
-const USDT_CONTRACT_ADDRESS = '0x3Fe3ad838059a254e5AAD551a2231f61a76a2554';
-const PRESALE_CONTRACT_ADDRESS = '0x4E21d8E429FC954F20934a41c0342f014705Bb8f';
+const USDT_CONTRACT_ADDRESS = "0x3Fe3ad838059a254e5AAD551a2231f61a76a2554";
+const PRESALE_CONTRACT_ADDRESS = "0x4E21d8E429FC954F20934a41c0342f014705Bb8f";
 
 // ABIs
-const USDT_ABI = ['function approve(address spender, uint256 value) public returns (bool)'];
-const PRESALE_ABI = ['function buyTokens(uint256 usdtAmount) public'];
+const USDT_ABI = [
+  "function approve(address spender, uint256 value) public returns (bool)",
+];
+const PRESALE_ABI = ["function buyTokens(uint256 usdtAmount) public"];
 
 function App() {
-  const [amount, setAmount] = useState<string>('');
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [skibidiAmount, setSkibidiAmount] = useState<string>('0');
+  const [amount, setAmount] = useState<string>("");
+  const [skibidiAmount, setSkibidiAmount] = useState<string>("0");
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [provider, setProvider] = useState<ethers.BrowserProvider | null>(null);
   const [signer, setSigner] = useState<ethers.Signer | null>(null);
+  const [isBuying, setIsBuying] = useState<boolean>(false);
 
-  // 1 USDT = 1000 SKIBIDI
+  // Calculate SKIBIDI amount (1 USDT = 1000 SKIBIDI)
   useEffect(() => {
     const numAmount = parseFloat(amount) || 0;
     setSkibidiAmount((numAmount * 1000).toLocaleString());
@@ -49,36 +51,36 @@ function App() {
         const provider = new ethers.BrowserProvider(window.ethereum);
         const signer = await provider.getSigner();
         const accounts = await window.ethereum.request({
-          method: 'eth_requestAccounts',
+          method: "eth_requestAccounts",
         });
         setWalletAddress(accounts[0]);
         setProvider(provider);
         setSigner(signer);
       } catch (error) {
-        console.error('Error connecting wallet:', error);
+        console.error("Error connecting wallet:", error);
       }
     } else {
-      alert('MetaMask not found. Please install MetaMask.');
+      alert("MetaMask not found. Please install MetaMask.");
     }
   };
 
   // Approve USDT spending & Buy Tokens
   const handleBuy = async () => {
     if (!isValidAmount() || !signer) {
-      alert('Invalid amount or wallet not connected');
+      alert("Invalid amount or wallet not connected");
       return;
     }
 
     try {
+      setIsBuying(true); // Disable button during transaction
       const usdtContract = new ethers.Contract(
         USDT_CONTRACT_ADDRESS,
         USDT_ABI,
         signer
       );
 
-      // USDT typically uses 6 decimals, adjust accordingly
       const amountInWei = ethers.parseUnits(amount, 6);
-      console.log('Approving USDT:', amountInWei.toString());
+      console.log("Approving USDT:", amountInWei.toString());
 
       // Approve exact amount
       const approveTx = await usdtContract.approve(
@@ -86,7 +88,7 @@ function App() {
         amountInWei
       );
       await approveTx.wait();
-      console.log('USDT Approved:', approveTx.hash);
+      console.log("USDT Approved:", approveTx.hash);
 
       // Call buyTokens on the presale contract
       const presaleContract = new ethers.Contract(
@@ -97,11 +99,13 @@ function App() {
 
       const buyTx = await presaleContract.buyTokens(amountInWei);
       await buyTx.wait();
-      alert('Token purchase successful!');
-      console.log('Tokens Purchased:', buyTx.hash);
+      alert("Token purchase successful!");
+      console.log("Tokens Purchased:", buyTx.hash);
     } catch (error) {
-      console.error('Transaction error:', error);
-      alert('Transaction failed. Check console for details.');
+      console.error("Transaction error:", error);
+      alert("Transaction failed. Check console for details.");
+    } finally {
+      setIsBuying(false); // Re-enable button after transaction
     }
   };
 
@@ -121,9 +125,7 @@ function App() {
             </div>
 
             <div className="hidden md:flex items-center space-x-4">
-              <a href="https://meme-coin-five.vercel.app/" className="flex items-center text-white hover:text-[#00f0ff]">
-                <Home size={20} className="mr-1" /> Home
-              </a>
+
 
               {walletAddress ? (
                 <button className="bg-gradient-to-r from-[#00f0ff] to-[#0066ff] text-black font-semibold px-6 py-2 rounded-lg flex items-center">
@@ -174,11 +176,11 @@ function App() {
               </div>
 
               <button
-                disabled={!isValidAmount() || !walletAddress}
+                disabled={!isValidAmount() || !walletAddress || isBuying}
                 onClick={handleBuy}
                 className="w-full py-3 rounded-xl font-semibold bg-gradient-to-r from-[#00f0ff] to-[#0066ff] text-black"
               >
-                Buy Tokens
+                {isBuying ? "Processing..." : "Buy Tokens"}
               </button>
             </div>
           </div>
