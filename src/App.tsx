@@ -4,7 +4,7 @@ import { Wallet2, Home } from "lucide-react";
 import skibidiLogo from "./assets/skibidi-removebg-preview.png";
 
 // Contract Addresses
-const USDT_CONTRACT_ADDRESS = "0x3Fe3ad838059a254e5AAD551a2231f61a76a2554";
+const USDT_CONTRACT_ADDRESS = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F";
 const PRESALE_CONTRACT_ADDRESS = "0x4843473451e7554533e0Fafe28e665533743Eac4 ";
 
 // ABIs
