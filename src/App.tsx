@@ -5,7 +5,7 @@ import skibidiLogo from "./assets/skibidi-removebg-preview.png";
 
 // Contract Addresses
 const USDT_CONTRACT_ADDRESS = "0x3Fe3ad838059a254e5AAD551a2231f61a76a2554";
-const PRESALE_CONTRACT_ADDRESS = "0xf3133c5C44F598710FCfC48C599ec2910c0e358C";
+const PRESALE_CONTRACT_ADDRESS = "0x4843473451e7554533e0Fafe28e665533743Eac4 ";
 
 // ABIs
 const USDT_ABI = [
@@ -38,7 +38,6 @@ function App() {
     }
   };
 
-  // Ensure the amount is valid (10 - 10000 USDT)
   const isValidAmount = () => {
     const numAmount = parseFloat(amount) || 0;
     return numAmount >= 10 && numAmount <= 1000;
